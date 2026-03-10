@@ -1,10 +1,14 @@
 import { FadeIn } from './FadeIn';
-import { ArrowRight, Mail, MapPin, X, MessageSquare, Loader2, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Mail, MapPin, X, MessageSquare, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { motion, useSpring, useMotionValue, AnimatePresence } from 'motion/react';
 import { MouseEvent, useEffect, useState } from 'react';
 
 export function Contact() {
   const [isDiscordModalOpen, setIsDiscordModalOpen] = useState(false);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
+  const [isInvalidEmailModalOpen, setIsInvalidEmailModalOpen] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
+  const [copiedDiscord, setCopiedDiscord] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
@@ -38,10 +42,22 @@ export function Contact() {
     setIsDiscordModalOpen(true);
   };
 
+  const handleEmailClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsEmailModalOpen(true);
+  };
+
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!formData.name || !formData.email || !formData.message) {
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 3000);
+      return;
+    }
+
+    if (!formData.email.toLowerCase().endsWith('@gmail.com')) {
+      setIsInvalidEmailModalOpen(true);
       setStatus('error');
       setTimeout(() => setStatus('idle'), 3000);
       return;
@@ -104,7 +120,7 @@ export function Contact() {
     <section id="contact" className="py-24 px-6 md:px-12 max-w-[1320px] mx-auto">
       <div 
         onMouseMove={handleMouseMove}
-        className="glass-card rounded-[32px] p-8 md:p-16 lg:p-24 relative overflow-hidden bg-grain group"
+        className="bg-[#050505] border border-white/10 shadow-2xl rounded-[32px] p-8 md:p-16 lg:p-24 relative overflow-hidden bg-grain group"
       >
         {/* Liquid Hover Effect Backgrounds */}
         <div className="absolute inset-0 z-0 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none">
@@ -134,13 +150,25 @@ export function Contact() {
                 Let's create something <span className="font-serif italic text-accent-warm">extraordinary</span>
               </h2>
 
+              <div className="mt-8 p-5 rounded-2xl bg-accent-warm/10 border border-accent-warm/20 flex items-start gap-4">
+                <AlertCircle size={20} className="text-accent-warm shrink-0 mt-0.5" />
+                <div className="text-sm text-text-soft leading-relaxed space-y-3">
+                  <p>
+                    <strong className="text-white">Project Terms:</strong> To secure your spot and ensure mutual commitment, I require a <strong className="text-accent-warm">50% upfront payment</strong> before starting any work. The remaining balance is due upon project completion.
+                  </p>
+                  <p>
+                    <strong className="text-white">Accepted Methods:</strong> PhonePe, Robux Gift Cards, and Roblox Gamepass. To process a payment or discuss alternative options, please contact me directly via Discord or Email.
+                  </p>
+                </div>
+              </div>
+
               <div className="space-y-6 mt-12">
-                <a href="mailto:torozoro980@gmail.com" className="flex items-center gap-4 text-text-soft hover:text-accent-warm transition-colors group">
+                <div onClick={handleEmailClick} className="flex items-center gap-4 text-text-soft hover:text-accent-warm transition-colors group cursor-pointer">
                   <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-accent-warm transition-colors">
                     <Mail size={20} />
                   </div>
                   <span className="text-lg font-medium">torozoro980@gmail.com</span>
-                </a>
+                </div>
 
                 <div onClick={handleDiscordClick} className="flex items-center gap-4 text-text-soft hover:text-accent-warm transition-colors group cursor-pointer">
                   <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-accent-warm transition-colors">
@@ -179,7 +207,7 @@ export function Contact() {
                       value={formData.email}
                       onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-text-soft focus:outline-none focus:border-accent-warm transition-colors"
-                      placeholder="jane@example.com"
+                      placeholder="jane@gmail.com"
                     />
                   </div>
                 </div>
@@ -237,6 +265,128 @@ export function Contact() {
         </div>
       </div>
 
+      {/* Email Modal */}
+      <AnimatePresence>
+        {isEmailModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-bg-primary/80 backdrop-blur-sm"
+            onClick={() => setIsEmailModalOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-md bg-grain rounded-3xl p-8 border border-white/10 shadow-2xl overflow-hidden"
+            >
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[200px] h-[200px] bg-accent-warm/20 rounded-full blur-[60px] pointer-events-none"></div>
+              
+              <button
+                onClick={() => setIsEmailModalOpen(false)}
+                className="absolute top-4 right-4 p-2 text-text-muted hover:text-white transition-colors"
+              >
+                <X size={20} />
+              </button>
+              
+              <div className="relative z-10 flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-2xl bg-accent-warm/20 border border-accent-warm/30 flex items-center justify-center mb-6 text-accent-warm">
+                  <Mail size={32} />
+                </div>
+                
+                <h3 className="text-2xl font-bold mb-3">Send me an Email!</h3>
+                
+                <p className="text-text-muted mb-8 leading-relaxed">
+                  This is my official email address. Feel free to contact me here for business inquiries or project details.
+                </p>
+                
+                <div className="w-full bg-black/40 border border-white/5 rounded-xl p-4 mb-6 flex items-center justify-between">
+                  <span className="text-text-muted text-sm">Email Address</span>
+                  <span className="font-mono font-bold text-accent-warm">torozoro980@gmail.com</span>
+                </div>
+                
+                <button 
+                  onClick={() => {
+                    navigator.clipboard.writeText('torozoro980@gmail.com');
+                    setCopiedEmail(true);
+                    setTimeout(() => setCopiedEmail(false), 2000);
+                  }}
+                  className="w-full bg-accent-warm hover:bg-white text-bg-primary font-bold py-3 rounded-xl transition-colors"
+                >
+                  {copiedEmail ? 'Copied!' : 'Copy Email Address'}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Invalid Email Modal */}
+      <AnimatePresence>
+        {isInvalidEmailModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-bg-primary/80 backdrop-blur-sm"
+            onClick={() => setIsInvalidEmailModalOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-md bg-grain rounded-3xl p-8 border border-white/10 shadow-2xl overflow-hidden"
+            >
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[200px] h-[200px] bg-red-500/20 rounded-full blur-[60px] pointer-events-none"></div>
+              
+              <button
+                onClick={() => setIsInvalidEmailModalOpen(false)}
+                className="absolute top-4 right-4 p-2 text-text-muted hover:text-white transition-colors"
+              >
+                <X size={20} />
+              </button>
+              
+              <div className="relative z-10 flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-2xl bg-red-500/20 border border-red-500/30 flex items-center justify-center mb-6 text-red-500">
+                  <AlertCircle size={32} />
+                </div>
+                
+                <h3 className="text-2xl font-bold mb-3">Gmail Required</h3>
+                
+                <p className="text-text-muted mb-6 leading-relaxed">
+                  To ensure the best communication and avoid spam filters, I currently only accept messages from <strong className="text-white">@gmail.com</strong> addresses. Please use a valid Google email to reach out!
+                </p>
+
+                <div className="w-full bg-black/40 border border-white/5 rounded-xl p-4 mb-6 flex items-center justify-between">
+                  <span className="text-text-muted text-sm">Or reach me on Discord</span>
+                  <span className="font-mono font-bold text-[#5865F2]">la_suko</span>
+                </div>
+                
+                <button 
+                  onClick={() => {
+                    navigator.clipboard.writeText('la_suko');
+                    setCopiedDiscord(true);
+                    setTimeout(() => setCopiedDiscord(false), 2000);
+                  }}
+                  className="w-full bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold py-3 rounded-xl transition-colors mb-3"
+                >
+                  {copiedDiscord ? 'Copied!' : 'Copy Discord Username'}
+                </button>
+                <button 
+                  onClick={() => setIsInvalidEmailModalOpen(false)}
+                  className="w-full bg-transparent hover:bg-white/5 text-text-muted font-bold py-3 rounded-xl transition-colors"
+                >
+                  I'll use a Gmail address
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Discord Modal */}
       <AnimatePresence>
         {isDiscordModalOpen && (
@@ -283,11 +433,12 @@ export function Contact() {
                 <button 
                   onClick={() => {
                     navigator.clipboard.writeText('la_suko');
-                    setIsDiscordModalOpen(false);
+                    setCopiedDiscord(true);
+                    setTimeout(() => setCopiedDiscord(false), 2000);
                   }}
                   className="w-full bg-[#5865F2] hover:bg-[#4752C4] text-white font-bold py-3 rounded-xl transition-colors"
                 >
-                  Copy Username
+                  {copiedDiscord ? 'Copied!' : 'Copy Username'}
                 </button>
               </div>
             </motion.div>
