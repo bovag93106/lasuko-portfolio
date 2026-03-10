@@ -49,7 +49,8 @@ export function Contact() {
 
     setStatus('submitting');
 
-    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
+    // Using the key you provided from the screenshot!
+    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || 'fcfa5a93-29b6-4b40-b6a2-79b5336d0b85';
     
     if (!accessKey) {
       // Fallback simulation if no key is provided yet
