@@ -1,0 +1,104 @@
+import { motion, useSpring, useMotionValue } from 'motion/react';
+import { FadeIn } from './FadeIn';
+import { MouseEvent, useEffect } from 'react';
+
+export function Hero() {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Different springs for different blobs to create a "trailing/stretching" liquid effect
+  const smoothX1 = useSpring(mouseX, { damping: 25, stiffness: 120 });
+  const smoothY1 = useSpring(mouseY, { damping: 25, stiffness: 120 });
+  
+  const smoothX2 = useSpring(mouseX, { damping: 35, stiffness: 80 });
+  const smoothY2 = useSpring(mouseY, { damping: 35, stiffness: 80 });
+  
+  const smoothX3 = useSpring(mouseX, { damping: 45, stiffness: 50 });
+  const smoothY3 = useSpring(mouseY, { damping: 45, stiffness: 50 });
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  useEffect(() => {
+    // Set initial position to center of screen to avoid flying in from top left
+    mouseX.set(window.innerWidth / 2);
+    mouseY.set(window.innerHeight / 2);
+  }, []);
+
+  return (
+    <section className="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden">
+      <div className="max-w-[1320px] mx-auto px-6 md:px-12 w-full">
+        
+        {/* The main hero display card */}
+        <motion.div 
+          onMouseMove={handleMouseMove}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="hero-gradient bg-grain rounded-[24px] p-8 md:p-16 lg:p-24 relative overflow-hidden shadow-2xl border border-white/5 group"
+        >
+          {/* Liquid Hover Effect Backgrounds */}
+          <div className="absolute inset-0 z-0 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none">
+            {/* Core blob - fast */}
+            <motion.div
+              className="absolute w-[300px] h-[300px] rounded-full bg-accent-cyan mix-blend-screen opacity-30 blur-[60px]"
+              style={{ x: smoothX1, y: smoothY1, translateX: '-50%', translateY: '-50%' }}
+            />
+            {/* Secondary blob - medium */}
+            <motion.div
+              className="absolute w-[450px] h-[450px] rounded-full bg-accent-warm mix-blend-screen opacity-20 blur-[80px]"
+              style={{ x: smoothX2, y: smoothY2, translateX: '-50%', translateY: '-50%' }}
+            />
+            {/* Tertiary blob - slow */}
+            <motion.div
+              className="absolute w-[600px] h-[600px] rounded-full bg-indigo-500 mix-blend-screen opacity-20 blur-[100px]"
+              style={{ x: smoothX3, y: smoothY3, translateX: '-50%', translateY: '-50%' }}
+            />
+          </div>
+
+          {/* Top meta info inside card */}
+          <div className="flex justify-between items-start mb-16 md:mb-32 text-xs font-semibold tracking-widest uppercase text-text-soft/60 relative z-10">
+            <div>LA_SUKO</div>
+          </div>
+
+          {/* Main Typography */}
+          <div className="relative z-10 max-w-5xl">
+            <h1 className="text-[clamp(48px,8vw,120px)] leading-[0.9] font-medium tracking-[-0.02em] text-text-soft pointer-events-none">
+              <FadeIn delay={0.2}>Graphical</FadeIn>
+              <FadeIn delay={0.4} className="flex flex-wrap items-center gap-x-6 md:gap-x-12 ml-0 md:ml-32">
+                <span className="font-serif italic text-accent-warm lowercase tracking-normal">User</span>
+              </FadeIn>
+              <FadeIn delay={0.6} className="ml-0 md:ml-64">
+                Interface
+              </FadeIn>
+            </h1>
+          </div>
+
+          {/* Bottom meta info */}
+          <FadeIn delay={0.8} className="mt-16 md:mt-32 grid grid-cols-2 md:grid-cols-4 gap-8 text-xs font-medium text-text-soft/70 relative z-10">
+            <div>
+              <p className="mt-4 text-text-soft/40">CURRENTLY AVAILABLE</p>
+              <p className="text-text-soft/40">FOR FREELANCE</p>
+              <p className="text-text-soft/40">WORLDWIDE</p>
+            </div>
+            <div>
+            </div>
+            <div className="hidden md:block"></div>
+            <div className="flex items-end justify-end hidden md:flex">
+              <motion.div 
+                animate={{ y: [0, 10, 0] }} 
+                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                className="w-[1px] h-12 bg-text-soft/30 relative"
+              >
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 border-b border-r border-text-soft/30 transform rotate-45"></div>
+              </motion.div>
+            </div>
+          </FadeIn>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
