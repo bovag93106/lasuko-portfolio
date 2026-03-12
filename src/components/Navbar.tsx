@@ -52,7 +52,7 @@ export function Navbar() {
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
     >
-      <div className="max-w-[1320px] mx-auto px-6 md:px-12 flex items-center justify-between">
+      <div className="max-w-[1320px] mx-auto px-4 md:px-12 flex items-center justify-between">
         <a href="#" style={{ fontFamily: 'Arial', fontStyle: 'normal', fontWeight: 'bold', textDecorationLine: 'none' }} className="text-xl tracking-tight text-text-soft">
           LA_SUKO
         </a>

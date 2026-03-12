@@ -7,14 +7,14 @@ export function About() {
   ];
 
   return (
-    <section id="about" className="py-24 px-6 md:px-12 max-w-[1320px] mx-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+    <section id="about" className="py-16 md:py-24 px-4 md:px-12 max-w-[1320px] mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
         <div>
           <FadeIn>
             <h2 className="text-[clamp(32px,5vw,64px)] font-medium leading-tight tracking-tight mb-8">
               Behind the <span className="font-serif italic text-accent-warm">pixels</span>
             </h2>
-            <div className="space-y-6 text-lg text-text-muted leading-relaxed">
+            <div className="space-y-6 text-base md:text-lg text-text-muted leading-relaxed">
               <p>
                 As an emerging UI/UX Developer, I bring a fresh, modern perspective to every project I undertake. I specialize in crafting custom interfaces that enhance player engagement and navigation, ensuring every design is both beautiful and intuitive. My workflow leverages Photoshop for bespoke asset creation and Roblox Studio for structured, scalable UI development. Whether it’s HUD design, inventory systems, or main menus, I am dedicated to delivering professional-grade visuals that elevate the player experience and help your game stand out.
               </p>

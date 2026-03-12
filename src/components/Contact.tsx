@@ -15,15 +15,15 @@ export function Contact() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Different springs for different blobs to create a "trailing/stretching" liquid effect
-  const smoothX1 = useSpring(mouseX, { damping: 25, stiffness: 120 });
-  const smoothY1 = useSpring(mouseY, { damping: 25, stiffness: 120 });
+  // Fast springs for snappy liquid effect
+  const smoothX1 = useSpring(mouseX, { damping: 20, stiffness: 300 });
+  const smoothY1 = useSpring(mouseY, { damping: 20, stiffness: 300 });
   
-  const smoothX2 = useSpring(mouseX, { damping: 35, stiffness: 80 });
-  const smoothY2 = useSpring(mouseY, { damping: 35, stiffness: 80 });
+  const smoothX2 = useSpring(mouseX, { damping: 25, stiffness: 200 });
+  const smoothY2 = useSpring(mouseY, { damping: 25, stiffness: 200 });
   
-  const smoothX3 = useSpring(mouseX, { damping: 45, stiffness: 50 });
-  const smoothY3 = useSpring(mouseY, { damping: 45, stiffness: 50 });
+  const smoothX3 = useSpring(mouseX, { damping: 30, stiffness: 120 });
+  const smoothY3 = useSpring(mouseY, { damping: 30, stiffness: 120 });
 
   function handleMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
     const { left, top } = currentTarget.getBoundingClientRect();
@@ -117,33 +117,33 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 px-6 md:px-12 max-w-[1320px] mx-auto">
+    <section id="contact" className="py-16 md:py-24 px-4 md:px-12 max-w-[1320px] mx-auto">
       <div 
         onMouseMove={handleMouseMove}
-        className="bg-[#050505] border border-white/10 shadow-2xl rounded-[32px] p-8 md:p-16 lg:p-24 relative overflow-hidden bg-grain group"
+        className="bg-white/[0.02] backdrop-blur-2xl border border-white/10 shadow-2xl rounded-3xl md:rounded-[32px] p-5 md:p-16 lg:p-24 relative overflow-hidden group"
       >
         {/* Liquid Hover Effect Backgrounds */}
-        <div className="absolute inset-0 z-0 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none">
+        <div className="absolute inset-0 z-0 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
           {/* Core blob - fast */}
           <motion.div
-            className="absolute w-[300px] h-[300px] rounded-full bg-accent-cyan mix-blend-screen opacity-30 blur-[60px]"
+            className="absolute w-[300px] h-[300px] rounded-full bg-sky-400 mix-blend-screen opacity-40 blur-[60px]"
             style={{ x: smoothX1, y: smoothY1, translateX: '-50%', translateY: '-50%' }}
           />
           {/* Secondary blob - medium */}
           <motion.div
-            className="absolute w-[450px] h-[450px] rounded-full bg-accent-warm mix-blend-screen opacity-20 blur-[80px]"
+            className="absolute w-[450px] h-[450px] rounded-full bg-blue-600 mix-blend-screen opacity-30 blur-[80px]"
             style={{ x: smoothX2, y: smoothY2, translateX: '-50%', translateY: '-50%' }}
           />
           {/* Tertiary blob - slow */}
           <motion.div
-            className="absolute w-[600px] h-[600px] rounded-full bg-indigo-500 mix-blend-screen opacity-20 blur-[100px]"
+            className="absolute w-[600px] h-[600px] rounded-full bg-indigo-400 mix-blend-screen opacity-20 blur-[100px]"
             style={{ x: smoothX3, y: smoothY3, translateX: '-50%', translateY: '-50%' }}
           />
         </div>
 
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent-warm/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 relative z-10">
           <div>
             <FadeIn>
               <h2 className="text-[clamp(40px,6vw,80px)] font-medium leading-[1.1] tracking-tight mb-6">
@@ -163,20 +163,20 @@ export function Contact() {
               </div>
 
               <div className="space-y-6 mt-12">
-                <div onClick={handleEmailClick} className="flex items-center gap-4 text-text-soft hover:text-accent-warm transition-colors group cursor-pointer">
-                  <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-accent-warm transition-colors">
-                    <Mail size={20} />
+                <div onClick={handleEmailClick} className="flex items-center gap-3 md:gap-4 text-text-soft hover:text-accent-warm transition-colors group cursor-pointer">
+                  <div className="w-10 h-10 md:w-12 md:h-12 shrink-0 rounded-full border border-white/10 flex items-center justify-center group-hover:border-accent-warm transition-colors">
+                    <Mail size={18} className="md:w-5 md:h-5" />
                   </div>
-                  <span className="text-lg font-medium">torozoro980@gmail.com</span>
+                  <span className="text-base md:text-lg font-medium break-all">torozoro980@gmail.com</span>
                 </div>
 
-                <div onClick={handleDiscordClick} className="flex items-center gap-4 text-text-soft hover:text-accent-warm transition-colors group cursor-pointer">
-                  <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-accent-warm transition-colors">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <div onClick={handleDiscordClick} className="flex items-center gap-3 md:gap-4 text-text-soft hover:text-accent-warm transition-colors group cursor-pointer">
+                  <div className="w-10 h-10 md:w-12 md:h-12 shrink-0 rounded-full border border-white/10 flex items-center justify-center group-hover:border-accent-warm transition-colors">
+                    <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                       <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/>
                     </svg>
                   </div>
-                  <span className="text-lg font-medium">la_suko</span>
+                  <span className="text-base md:text-lg font-medium">la_suko</span>
                 </div>
               </div>
             </FadeIn>

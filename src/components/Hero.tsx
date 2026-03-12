@@ -6,15 +6,15 @@ export function Hero() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Different springs for different blobs to create a "trailing/stretching" liquid effect
-  const smoothX1 = useSpring(mouseX, { damping: 25, stiffness: 120 });
-  const smoothY1 = useSpring(mouseY, { damping: 25, stiffness: 120 });
+  // Fast springs for snappy liquid effect
+  const smoothX1 = useSpring(mouseX, { damping: 20, stiffness: 300 });
+  const smoothY1 = useSpring(mouseY, { damping: 20, stiffness: 300 });
   
-  const smoothX2 = useSpring(mouseX, { damping: 35, stiffness: 80 });
-  const smoothY2 = useSpring(mouseY, { damping: 35, stiffness: 80 });
+  const smoothX2 = useSpring(mouseX, { damping: 25, stiffness: 200 });
+  const smoothY2 = useSpring(mouseY, { damping: 25, stiffness: 200 });
   
-  const smoothX3 = useSpring(mouseX, { damping: 45, stiffness: 50 });
-  const smoothY3 = useSpring(mouseY, { damping: 45, stiffness: 50 });
+  const smoothX3 = useSpring(mouseX, { damping: 30, stiffness: 120 });
+  const smoothY3 = useSpring(mouseY, { damping: 30, stiffness: 120 });
 
   function handleMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
     const { left, top } = currentTarget.getBoundingClientRect();
@@ -30,7 +30,7 @@ export function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden">
-      <div className="max-w-[1320px] mx-auto px-6 md:px-12 w-full">
+      <div className="max-w-[1320px] mx-auto px-4 md:px-12 w-full">
         
         {/* The main hero display card */}
         <motion.div 
@@ -38,18 +38,18 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="hero-gradient bg-grain rounded-[24px] p-8 md:p-16 lg:p-24 relative overflow-hidden shadow-2xl border border-white/5 group"
+          className="bg-white/[0.02] backdrop-blur-2xl rounded-3xl md:rounded-[32px] p-5 md:p-16 lg:p-24 relative overflow-hidden shadow-2xl border border-white/10 group"
         >
           {/* Liquid Hover Effect Backgrounds */}
-          <div className="absolute inset-0 z-0 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none">
+          <div className="absolute inset-0 z-0 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
             {/* Core blob - fast */}
             <motion.div
-              className="absolute w-[300px] h-[300px] rounded-full bg-accent-cyan mix-blend-screen opacity-30 blur-[60px]"
+              className="absolute w-[300px] h-[300px] rounded-full bg-blue-500 mix-blend-screen opacity-40 blur-[60px]"
               style={{ x: smoothX1, y: smoothY1, translateX: '-50%', translateY: '-50%' }}
             />
             {/* Secondary blob - medium */}
             <motion.div
-              className="absolute w-[450px] h-[450px] rounded-full bg-accent-warm mix-blend-screen opacity-20 blur-[80px]"
+              className="absolute w-[450px] h-[450px] rounded-full bg-cyan-400 mix-blend-screen opacity-30 blur-[80px]"
               style={{ x: smoothX2, y: smoothY2, translateX: '-50%', translateY: '-50%' }}
             />
             {/* Tertiary blob - slow */}
